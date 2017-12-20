@@ -1,11 +1,18 @@
 from time import sleep
 import RPi.GPIO as GPIO
+import pygame
+import pygame.camera
+import os
 
 # config
 button_delay = 0.1
 button_pin = 12
 button_led_pin = 11
 smile_led_pin = 16
+
+# camera setup
+cam = pygame.camera.Camera("/dev/video0",(640,480))
+cam.start()
 
 def button_pressed():
     return (GPIO.input(button_pin) == False)
@@ -48,7 +55,8 @@ def start_photo_seq():
     turn_button_led_off()
     turn_smile_led_on()
     print("cheeeeese :)")
-    sleep(10)
+    sleep(3)
+    take_picture()
     print("ready")
     turn_smile_led_off()
     return
@@ -70,9 +78,15 @@ def destory_gpio():
     GPIO.cleanup()
     print("cleanup finished")
 
+def take_picture():
+    img = cam.get_image()
+    filename = os.path.join('pics', 'test.jpg')
+    pygame.image.save(img, filename)
+
 if __name__ == '__main__':
 
     try:
+        pygame.camera.init()
         setup_gpio()
         button_loop()
     finally:
