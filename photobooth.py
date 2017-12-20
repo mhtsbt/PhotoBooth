@@ -59,9 +59,7 @@ def setup_gpio():
 
     # led
     GPIO.setup(smile_led_pin, GPIO.OUT)
-    GPIO.output(smile_led_pin, GPIO.HIGH)
     GPIO.setup(button_led_pin, GPIO.OUT)
-    GPIO.output(button_led_pin, GPIO.HIGH)
 
     # button
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -70,6 +68,7 @@ def destory_gpio():
     turn_button_led_off()
     turn_smile_led_off()
     GPIO.cleanup()
+    print("cleanup finished")
 
 if __name__ == '__main__':
 
