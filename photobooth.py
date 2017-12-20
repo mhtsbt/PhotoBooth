@@ -18,19 +18,15 @@ def button_pressed():
     return (GPIO.input(button_pin) == False)
 
 def turn_button_led_off():
-    print("button led off")
     GPIO.output(button_led_pin, GPIO.LOW)
 
 def turn_button_led_on():
-    print("button led on")
     GPIO.output(button_led_pin, GPIO.HIGH)
 
 def turn_smile_led_off():
-    print("smile led off")
     GPIO.output(smile_led_pin, GPIO.LOW)
 
 def turn_smile_led_on():
-    print("smile led on")
     GPIO.output(smile_led_pin, GPIO.HIGH)
 
 def button_loop():  
