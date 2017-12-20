@@ -7,12 +7,6 @@ button_pin = 12
 button_led_pin = 11
 smile_led_pin = 16
 
-class Camera:
-    camera_available = True
-
-    def set_state(self,newState):
-        self.camera_available = newState
-
 def button_pressed():
     return (GPIO.input(button_pin) == False)
 
@@ -32,15 +26,14 @@ def turn_smile_led_on():
     print("smile led on")
     GPIO.output(smile_led_pin, GPIO.HIGH)
 
-def button_loop(cam):  
+def button_loop():  
 
     i = 0
 
     while 1:
 
-        if button_pressed() and cam.camera_available:
-            turn_button_led_off()
-            start_photo_seq(cam)
+        if button_pressed():            
+            start_photo_seq()
         elif i == 8:
             turn_button_led_on()
         elif i == 16:
@@ -51,14 +44,14 @@ def button_loop(cam):
         i += 1
 
 
-def start_photo_seq(cam):
-    cam.set_state(False)
+def start_photo_seq():
+    turn_button_led_off()
     turn_smile_led_on()
     print("cheeeeese :)")
     sleep(10)
     print("ready")
-    cam.set_state(True)
     turn_smile_led_off()
+    return
 
 def setup_gpio():
 
@@ -73,8 +66,15 @@ def setup_gpio():
     # button
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+def destory_gpio():
+    turn_button_led_off()
+    turn_smile_led_off()
+    GPIO.cleanup()
+
 if __name__ == '__main__':
 
-    setup_gpio()
-    cam = Camera()
-    button_loop(cam)
+    try:
+        setup_gpio()
+        button_loop()
+    finally:
+        destory_gpio()
