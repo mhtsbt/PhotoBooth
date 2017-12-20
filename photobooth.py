@@ -14,7 +14,7 @@ class Camera:
         self.camera_available = newState
 
 def button_pressed():
-    return GPIO.input(button_pin)
+    return (GPIO.input(button_pin) == False)
 
 def turn_button_led_off():
     print("button led off")
