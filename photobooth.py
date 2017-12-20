@@ -81,7 +81,7 @@ def destory_gpio():
 def take_picture(filename):
     cam.start()
     img = cam.get_image()
-    filename = os.path.join('pics', filename+'.jpg')
+    filename = os.path.join('home','pi','pics', filename+'.jpg')
     pygame.image.save(img, filename)
 
 def print_picture(filename):
