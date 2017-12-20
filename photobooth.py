@@ -2,7 +2,6 @@ import time
 import RPi.GPIO as GPIO
 import pygame
 import pygame.camera
-import os
 
 # config
 button_delay = 0.1
@@ -81,7 +80,7 @@ def destory_gpio():
 def take_picture(filename):
     cam.start()
     img = cam.get_image()
-    filename = os.path.join('home','pi','pics', filename+'.jpg')
+    filename = '/home/pi/pics/'+filename+'.jpg'
     pygame.image.save(img, filename)
 
 def print_picture(filename):
