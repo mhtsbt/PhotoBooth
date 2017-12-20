@@ -11,6 +11,7 @@ button_led_pin = 11
 smile_led_pin = 16
 
 # camera setup
+pygame.camera.init()
 cam = pygame.camera.Camera("/dev/video0",(640,480))
 cam.start()
 
@@ -85,8 +86,7 @@ def take_picture():
 
 if __name__ == '__main__':
 
-    try:
-        pygame.camera.init()
+    try:        
         setup_gpio()
         button_loop()
     finally:
