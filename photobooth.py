@@ -21,7 +21,7 @@ def turn_button_led_off():
     GPIO.output(button_led_pin, GPIO.LOW)
 
 def turn_button_led_on():
-    print("smile led on"+(str(button_led_pin)))
+    print("button led on")
     GPIO.output(button_led_pin, GPIO.HIGH)
 
 def turn_smile_led_off():
