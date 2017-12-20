@@ -13,7 +13,6 @@ smile_led_pin = 16
 # camera setup
 pygame.camera.init()
 cam = pygame.camera.Camera("/dev/video0",(640,480))
-cam.start()
 
 def button_pressed():
     return (GPIO.input(button_pin) == False)
@@ -84,6 +83,7 @@ def destory_gpio():
     print("cleanup finished")
 
 def take_picture(filename):
+    cam.start()
     img = cam.get_image()
     filename = os.path.join('pics', filename+'.jpg')
     pygame.image.save(img, filename)
