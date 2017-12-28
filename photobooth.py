@@ -54,6 +54,8 @@ def start_photo_seq():
 
     filename = str(time.time()).split('.')[0]
 
+    print(filename)
+
     print("cheeeeese :)")
     time.sleep(1)
     take_picture(filename)
@@ -98,12 +100,15 @@ def generate_pdf(filename):
 
     pdf.output(out_file, 'F')
 
+    print("pdf ready")
+
 def print_picture(filename):
 
     print("printing")
     generate_pdf(filename)
 
     full_path = '/home/pi/pics/'+filename+'.pdf'
+    print(full_path)
     print (subprocess.check_output(['lp',full_path]))
 
 if __name__ == '__main__':
