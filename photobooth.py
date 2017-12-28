@@ -2,6 +2,8 @@ import time
 import RPi.GPIO as GPIO
 import pygame
 import pygame.camera
+from fpdf import FPDF
+import subprocess
 
 # config
 button_delay = 0.1
@@ -53,7 +55,7 @@ def start_photo_seq():
     filename = str(time.time()).split('.')[0]
 
     print("cheeeeese :)")
-    time.sleep(3)
+    time.sleep(1)
     take_picture(filename)
     print_picture(filename)
     print("ready")
@@ -83,8 +85,26 @@ def take_picture(filename):
     filename = '/home/pi/pics/'+filename+'.jpg'
     pygame.image.save(img, filename)
 
+def generate_pdf(filename):
+
+    pic = '/home/pi/pics/'+filename+'.jpg'
+    out_file = '/home/pi/pics/'+filename+'.pdf'
+
+    pdf = FPDF('P', 'mm', (100, 150))
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 16)
+    pdf.cell(40, 5, 'MATTHIAS & CELINE')
+    pdf.image(name=pic, x =5, y = 20, w = 90, h = 70, link = pic)
+
+    pdf.output(out_file, 'F')
+
 def print_picture(filename):
-    print("printing...")
+
+    print("printing")
+    generate_pdf(filename)
+
+    full_path = '/home/pi/pics/'+filename+'.pdf'
+    print (subprocess.check_output(['lp',full_path]))
 
 if __name__ == '__main__':
 
