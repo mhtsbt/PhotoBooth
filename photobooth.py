@@ -59,7 +59,7 @@ def start_photo_seq():
     print("cheeeeese :)")
     time.sleep(1)
     take_picture(filename)
-    print_picture(filename)
+#    print_picture(filename)
     print("ready")
     turn_smile_led_off()
     return
@@ -86,6 +86,7 @@ def take_picture(filename):
     img = cam.get_image()
     filename = '/home/pi/pics/'+filename+'.jpg'
     pygame.image.save(img, filename)
+    cam.stop()
 
 def generate_pdf(filename):
 
