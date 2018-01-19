@@ -59,7 +59,7 @@ def start_photo_seq():
     print("cheeeeese :)")
     time.sleep(1)
     take_picture(filename)
-#    print_picture(filename)
+    print_picture(filename)
     print("ready")
     turn_smile_led_off()
     return
