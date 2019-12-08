@@ -10,10 +10,15 @@ button_delay = 0.1
 button_pin = 12
 button_led_pin = 11
 smile_led_pin = 16
+enable_print = False
 
 # camera setup
+pygame.init()
+
 pygame.camera.init()
 cam = pygame.camera.Camera("/dev/video0",(640,480))
+
+pygame.mixer.init()
 
 def button_pressed():
     return (GPIO.input(button_pin) == False)
@@ -52,14 +57,23 @@ def start_photo_seq():
     turn_button_led_off()
     turn_smile_led_on()
 
+    pygame.mixer.music.load("countdown.mp3")
+    pygame.mixer.music.play()
+   # pygame.event.wait()
+
+
     filename = str(time.time()).split('.')[0]
 
     print(filename)
 
     print("cheeeeese :)")
-    time.sleep(1)
+    time.sleep(6)
+
+    print("Taking picture")
     take_picture(filename)
-    print_picture(filename)
+
+    if enable_print:
+        print_picture(filename)
     print("ready")
     turn_smile_led_off()
     return
