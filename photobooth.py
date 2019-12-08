@@ -95,8 +95,8 @@ def generate_pdf(filename):
 
     pdf = FPDF('P', 'mm', (100, 150))
     pdf.add_page()
-    pdf.set_font('Arial', 'B', 16)
-    pdf.cell(40, 5, 'MATTHIAS & CELINE')
+    #pdf.set_font('Arial', 'B', 16)
+    #pdf.cell(40, 5, 'MATTHIAS & CELINE')
     pdf.image(name=pic, x =5, y = 20, w = 90, h = 70, link = pic)
 
     pdf.output(out_file, 'F')
