@@ -4,7 +4,7 @@ import cv2
 import time
 from shutil import copyfile
 
-IMG_TEMP_FILEN = "capt00001.jpg"
+IMG_TEMP_FILEN = "capt0000.jpg"
 OUTPUT_PDF = "out.pdf"
 
 def take_picture():
