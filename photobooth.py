@@ -10,10 +10,13 @@ button_delay = 0.1
 button_pin = 12
 button_led_pin = 11
 smile_led_pin = 16
-enable_print = False
+enable_print = True
+
+subprocess.run(["amixer","set","PCM","--","100%"])
+
 
 # camera setup
-pygame.init()
+#pygame.init()
 
 pygame.camera.init()
 cam = pygame.camera.Camera("/dev/video0",(640,480))
@@ -21,7 +24,7 @@ cam = pygame.camera.Camera("/dev/video0",(640,480))
 pygame.mixer.init()
 
 def button_pressed():
-    return (GPIO.input(button_pin) == False)
+    return (GPIO.input(button_pin) == 1)
 
 def turn_button_led_off():
     GPIO.output(button_led_pin, GPIO.LOW)
@@ -39,25 +42,20 @@ def button_loop():
 
     i = 0
 
-    while 1:
-
-        if button_pressed():            
-            start_photo_seq()
-        elif i == 8:
-            turn_button_led_on()
-        elif i == 16:
-            turn_button_led_off()
-            i = 0
-
+    while True:
+        #print("waiting")
+        if button_pressed():
+             try:
+                 start_photo_seq()
+             except Exception as e:
+                 print(e)
         time.sleep(button_delay)        
-        i += 1
-
 
 def start_photo_seq():
-    turn_button_led_off()
-    turn_smile_led_on()
+   # turn_button_led_off()
+   # turn_smile_led_on()
 
-    pygame.mixer.music.load("countdown.mp3")
+    pygame.mixer.music.load("/home/pi/photobooth/countdown.mp3")
     pygame.mixer.music.play()
    # pygame.event.wait()
 
@@ -75,23 +73,19 @@ def start_photo_seq():
     if enable_print:
         print_picture(filename)
     print("ready")
-    turn_smile_led_off()
+ #   turn_smile_led_off()
     return
 
 def setup_gpio():
 
     GPIO.setmode(GPIO.BOARD)
 
-    # led
-    GPIO.setup(smile_led_pin, GPIO.OUT)
-    GPIO.setup(button_led_pin, GPIO.OUT)
-
     # button
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def destory_gpio():
-    turn_button_led_off()
-    turn_smile_led_off()
+#    turn_button_led_off()
+#    turn_smile_led_off()
     GPIO.cleanup()
     print("cleanup finished")
 
