@@ -4,19 +4,20 @@ import pygame
 import pygame.camera
 from fpdf import FPDF
 import subprocess
+from PIL import Image 
 
 # config
 button_delay = 0.1
 button_pin = 12
 button_led_pin = 11
 smile_led_pin = 16
-enable_print = True
+enable_print = False
 
-subprocess.run(["amixer","set","PCM","--","100%"])
+#subprocess.run(["amixer","set","PCM","--","100%"])
 
 
 # camera setup
-#pygame.init()
+pygame.init()
 
 pygame.camera.init()
 cam = pygame.camera.Camera("/dev/video0",(640,480))
@@ -55,8 +56,8 @@ def start_photo_seq():
    # turn_button_led_off()
    # turn_smile_led_on()
 
-    pygame.mixer.music.load("/home/pi/photobooth/countdown.mp3")
-    pygame.mixer.music.play()
+    #pygame.mixer.music.load("/home/pi/photobooth/countdown.mp3")
+   # pygame.mixer.music.play()
    # pygame.event.wait()
 
 
@@ -92,8 +93,13 @@ def destory_gpio():
 def take_picture(filename):
     cam.start()
     img = cam.get_image()
-    filename = '/home/pi/pics/'+filename+'.jpg'
-    pygame.image.save(img, filename)
+    filename = '/home/photobooth/Pictures/'+filename+'.jpg'
+
+    data = pygame.image.tostring(img, 'RGB')
+    pil_img = Image.frombytes('RGB', img.get_size(), data)
+    pil_img.save(filename)
+
+    #pygame.image.save(img, filename)
     cam.stop()
 
 def generate_pdf(filename):
@@ -121,6 +127,9 @@ def print_picture(filename):
     print (subprocess.check_output(['lp',full_path]))
 
 if __name__ == '__main__':
+
+    start_photo_seq()
+    quit()
 
     try:        
         setup_gpio()
