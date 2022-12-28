@@ -11,7 +11,8 @@ button_delay = 0.1
 button_pin = 12
 button_led_pin = 11
 smile_led_pin = 16
-enable_print = False
+enable_print = True
+pictures_location = "/home/photobooth/Pictures"
 
 #subprocess.run(["amixer","set","PCM","--","100%"])
 
@@ -93,7 +94,7 @@ def destory_gpio():
 def take_picture(filename):
     cam.start()
     img = cam.get_image()
-    filename = '/home/photobooth/Pictures/'+filename+'.jpg'
+    filename = f'{pictures_location}/{filename}.jpg'
 
     data = pygame.image.tostring(img, 'RGB')
     pil_img = Image.frombytes('RGB', img.get_size(), data)
@@ -104,8 +105,8 @@ def take_picture(filename):
 
 def generate_pdf(filename):
 
-    pic = '/home/pi/pics/'+filename+'.jpg'
-    out_file = '/home/pi/pics/'+filename+'.pdf'
+    pic = f'{pictures_location}/'+filename+'.jpg'
+    out_file = f'{pictures_location}/'+filename+'.pdf'
 
     pdf = FPDF('P', 'mm', (100, 150))
     pdf.add_page()
@@ -122,7 +123,7 @@ def print_picture(filename):
     print("printing")
     generate_pdf(filename)
 
-    full_path = '/home/pi/pics/'+filename+'.pdf'
+    full_path = f'{pictures_location}/'+filename+'.pdf'
     print(full_path)
     print (subprocess.check_output(['lp',full_path]))
 
