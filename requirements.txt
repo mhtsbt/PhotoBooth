@@ -1,4 +1,5 @@
 fpdf==1.7.2
+pypdf==3.17.4
 RPi.GPIO==0.7.1
 pygame==2.1.2
 Pillow==9.3.0

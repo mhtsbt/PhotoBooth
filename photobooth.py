@@ -1,15 +1,24 @@
+<<<<<<< HEAD
 #!/usr/bin/env python3
 
+=======
+import os
+>>>>>>> 936f52ec01fc47a6e574551ee5e355bc5600f7d2
 import time
 import RPi.GPIO as GPIO
 import pygame
 import pygame.camera
 from fpdf import FPDF
+from pypdf import PdfReader, PdfWriter
 import subprocess
+<<<<<<< HEAD
 from PIL import Image 
 import board
 import neopixel
 
+=======
+from PIL import Image
+>>>>>>> 936f52ec01fc47a6e574551ee5e355bc5600f7d2
 
 # config
 button_delay = 0.1
@@ -18,6 +27,7 @@ button_led_pin = 11
 smile_led_pin = 16
 enable_print = True
 pictures_location = "/home/photobooth/Pictures"
+background_pdf_path = f"{pictures_location}/background.pdf"
 
 pixels = neopixel.NeoPixel(board.D18, 24)
 pixels.fill((0, 255, 0))
@@ -119,15 +129,37 @@ def generate_pdf(filename):
     pic = f'{pictures_location}/'+filename+'.jpg'
     out_file = f'{pictures_location}/'+filename+'.pdf'
 
-    pdf = FPDF('P', 'mm', (100, 150))
-    pdf.add_page()
-    #pdf.set_font('Arial', 'B', 16)
-    #pdf.cell(40, 5, 'MATTHIAS & CELINE')
-    pdf.image(name=pic, x =5, y = 20, w = 90, h = 70, link = pic)
+    if os.path.isfile(background_pdf_path):
+        # overlay the picture onto the background template (e.g. logo/text)
+        overlay_file = f'{pictures_location}/'+filename+'_overlay.pdf'
 
-    pdf.output(out_file, 'F')
+        overlay = FPDF('P', 'mm', (100, 150))
+        overlay.add_page()
+        overlay.image(name=pic, x=5, y=20, w=90, h=70, link=pic)
+        overlay.output(overlay_file, 'F')
 
-    print("pdf ready")
+        background_page = PdfReader(background_pdf_path).pages[0]
+        overlay_page = PdfReader(overlay_file).pages[0]
+        background_page.merge_page(overlay_page)
+
+        writer = PdfWriter()
+        writer.add_page(background_page)
+        with open(out_file, 'wb') as f:
+            writer.write(f)
+
+        os.remove(overlay_file)
+
+        print("pdf ready (with background template)")
+    else:
+        pdf = FPDF('P', 'mm', (100, 150))
+        pdf.add_page()
+        #pdf.set_font('Arial', 'B', 16)
+        #pdf.cell(40, 5, 'MATTHIAS & CELINE')
+        pdf.image(name=pic, x =5, y = 20, w = 90, h = 70, link = pic)
+
+        pdf.output(out_file, 'F')
+
+        print("pdf ready")
 
 def print_picture(filename):
 
