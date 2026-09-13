@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import time
 import RPi.GPIO as GPIO
 import pygame
@@ -5,14 +7,20 @@ import pygame.camera
 from fpdf import FPDF
 import subprocess
 from PIL import Image 
+import board
+import neopixel
+
 
 # config
 button_delay = 0.1
-button_pin = 12
+button_pin = 14
 button_led_pin = 11
 smile_led_pin = 16
 enable_print = True
 pictures_location = "/home/photobooth/Pictures"
+
+pixels = neopixel.NeoPixel(board.D18, 24)
+pixels.fill((0, 255, 0))
 
 #subprocess.run(["amixer","set","PCM","--","100%"])
 
@@ -23,10 +31,10 @@ pygame.init()
 pygame.camera.init()
 cam = pygame.camera.Camera("/dev/video0",(640,480))
 
-pygame.mixer.init()
+#pygame.mixer.init()
 
 def button_pressed():
-    return (GPIO.input(button_pin) == 1)
+    return (GPIO.input(button_pin) == 0)
 
 def turn_button_led_off():
     GPIO.output(button_led_pin, GPIO.LOW)
@@ -45,7 +53,7 @@ def button_loop():
     i = 0
 
     while True:
-        #print("waiting")
+#        print("waiting")
         if button_pressed():
              try:
                  start_photo_seq()
@@ -66,8 +74,10 @@ def start_photo_seq():
 
     print(filename)
 
+    pixels.fill((255, 0, 0))
     print("cheeeeese :)")
     time.sleep(6)
+    pixels.fill((255, 255, 255))
 
     print("Taking picture")
     take_picture(filename)
@@ -75,12 +85,13 @@ def start_photo_seq():
     if enable_print:
         print_picture(filename)
     print("ready")
+    pixels.fill((0, 0, 0))
  #   turn_smile_led_off()
     return
 
 def setup_gpio():
 
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
 
     # button
     GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -129,8 +140,8 @@ def print_picture(filename):
 
 if __name__ == '__main__':
 
-    start_photo_seq()
-    quit()
+    #start_photo_seq()
+    #quit()
 
     try:        
         setup_gpio()
