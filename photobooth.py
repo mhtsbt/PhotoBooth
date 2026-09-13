@@ -51,6 +51,15 @@ def turn_smile_led_off():
 def turn_smile_led_on():
     GPIO.output(smile_led_pin, GPIO.HIGH)
 
+def countdown_leds(duration, color):
+    num_pixels = len(pixels)
+    interval = duration / num_pixels
+
+    pixels.fill(color)
+    for i in range(num_pixels):
+        pixels[i] = (0, 0, 0)
+        time.sleep(interval)
+
 def button_loop():  
 
     i = 0
@@ -77,9 +86,8 @@ def start_photo_seq():
 
     print(filename)
 
-    pixels.fill((255, 0, 0))
     print("cheeeeese :)")
-    time.sleep(6)
+    countdown_leds(6, (255, 0, 0))
     pixels.fill((255, 255, 255))
 
     print("Taking picture")
