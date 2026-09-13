@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 #!/usr/bin/env python3
 
-=======
 import os
->>>>>>> 936f52ec01fc47a6e574551ee5e355bc5600f7d2
 import time
 import RPi.GPIO as GPIO
 import pygame
@@ -11,14 +8,10 @@ import pygame.camera
 from fpdf import FPDF
 from pypdf import PdfReader, PdfWriter
 import subprocess
-<<<<<<< HEAD
-from PIL import Image 
+from PIL import Image
 import board
 import neopixel
 
-=======
-from PIL import Image
->>>>>>> 936f52ec01fc47a6e574551ee5e355bc5600f7d2
 
 # config
 button_delay = 0.1
